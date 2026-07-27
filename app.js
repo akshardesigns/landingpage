@@ -20,11 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     searchQuery: '',
     strategyFilter: 'all',
     apiConfig: {
-      tiktokAppKey: localStorage.getItem('tt_app_key') || 'tt_app_demo_key_9983172',
-      tiktokToken: localStorage.getItem('tt_token') || 'act_sec_demo_982391823918239',
-      gsheetId: localStorage.getItem('gsheet_id') || '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-      gsheetApiKey: localStorage.getItem('gsheet_api_key') || 'AIzaSyB_DemoKey_9918273645',
-      gsheetName: localStorage.getItem('gsheet_name') || 'TikTok_Analytics_Report'
+      tiktokUser: (window.ENV && window.ENV.TIKTOK_ACCOUNT_USERNAME) || '@akhmad.suhardian',
+      tiktokAppKey: localStorage.getItem('tt_app_key') || (window.ENV && window.ENV.TIKTOK_APP_CLIENT_KEY) || 'tt_app_demo_key_9983172',
+      tiktokToken: localStorage.getItem('tt_token') || (window.ENV && window.ENV.TIKTOK_ACCESS_TOKEN) || 'act_sec_demo_982391823918239',
+      gsheetId: localStorage.getItem('gsheet_id') || (window.ENV && window.ENV.GOOGLE_SHEETS_SPREADSHEET_ID) || '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
+      gsheetApiKey: localStorage.getItem('gsheet_api_key') || (window.ENV && window.ENV.GOOGLE_SHEETS_API_KEY) || 'AIzaSyB_DemoKey_9918273645',
+      gsheetName: localStorage.getItem('gsheet_name') || (window.ENV && window.ENV.GOOGLE_SHEETS_TARGET_TAB) || 'TikTok_Analytics_Report'
     }
   };
 
