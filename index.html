@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Analytics & AI Content Strategy Dashboard - @akhmad.suhardian</title>
+  
+  <!-- SEO & Meta -->
+  <meta name="description" content="Dashboard Analisis TikTok dengan Metriks Reach, Engagement, Integrasi TikTok & Google Sheets API, serta Strategy Konten Viral 7 Hari." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dark-mode">
+
+  <!-- Main Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-brands fa-tiktok text-gradient"></i>
+        </div>
+        <div class="brand-text">
+          <span class="title">TokMetrics AI</span>
+          <span class="subtitle">Analytics & Strategy</span>
+        </div>
+      </div>
+
+      <!-- User Profile Summary -->
+      <div class="profile-card">
+        <div class="avatar-container">
+          <div class="avatar-ring"></div>
+          <div class="avatar-img">AI</div>
+        </div>
+        <div class="profile-info">
+          <h4 id="profileName">Akshardesigns.Id | Canva</h4>
+          <a href="https://www.tiktok.com/@akhmad.suhardian" target="_blank" class="handle">@akhmad.suhardian <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          <span class="badge badge-verified"><i class="fa-solid fa-circle-check"></i> Canva Creator Profile</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="dashboard">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Dashboard Analytics</span>
+        </button>
+        <button class="nav-item" data-tab="content-strategy">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Strategi Konten 7 Hari</span>
+          <span class="badge-new">AI</span>
+        </button>
+        <button class="nav-item" data-tab="video-library">
+          <i class="fa-solid fa-photo-film"></i>
+          <span>Performa Video</span>
+        </button>
+        <button class="nav-item" data-tab="integrations">
+          <i class="fa-solid fa-plug"></i>
+          <span>API & Google Sheets</span>
+        </button>
+      </nav>
+
+      <!-- Sync Status Card -->
+      <div class="sidebar-footer">
+        <div class="sync-card">
+          <div class="sync-header">
+            <span class="status-dot online"></span>
+            <span>API Status: Connected</span>
+          </div>
+          <p class="sync-time" id="lastSyncTime">Sync Terakhir: Hari ini, 21:54 WIB</p>
+          <button class="btn btn-sm btn-outline-glow" id="quickSyncBtn">
+            <i class="fa-solid fa-rotate-right"></i> Refresh Data
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="page-title-group">
+          <h1 id="pageTitle">Dashboard Analisis TikTok</h1>
+          <p id="pageSubtitle">Monitoring metriks Reach, Engagement & Conversion akun @akhmad.suhardian</p>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="date-range-picker">
+            <i class="fa-regular fa-calendar"></i>
+            <select id="dateFilter" class="select-input">
+              <option value="7d">7 Hari Terakhir</option>
+              <option value="30d" selected>30 Hari Terakhir</option>
+              <option value="90d">90 Hari Terakhir</option>
+            </select>
+          </div>
+
+          <button class="btn btn-emerald" id="openCustomDataModalBtn">
+            <i class="fa-solid fa-pen-to-square"></i> Input / Impor Data Konten Asli
+          </button>
+
+          <button class="btn btn-primary" id="openApiModalBtn">
+            <i class="fa-solid fa-key"></i> Integrasi API / GSheet
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD ANALYTICS -->
+      <section class="tab-content active" id="tab-dashboard">
+        
+        <!-- Key Metrics Cards -->
+        <div class="metrics-grid">
+          
+          <!-- Metric Card 1: Reach -->
+          <div class="metric-card cyan-glow">
+            <div class="card-top">
+              <div class="icon-box cyan">
+                <i class="fa-solid fa-chart-area"></i>
+              </div>
+              <span class="trend-badge positive">
+                <i class="fa-solid fa-arrow-trend-up"></i> +24.8%
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="metric-label">Total Reach (Est. Penonton Unik)</span>
+              <h2 class="metric-value" id="valReach">428.5K</h2>
+              <span class="metric-subtext">Dari total 612.4K Total Impressions</span>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar cyan-bar" style="width: 78%;"></div>
+            </div>
+          </div>
+
+          <!-- Metric Card 2: Engagement Rate -->
+          <div class="metric-card magenta-glow">
+            <div class="card-top">
+              <div class="icon-box magenta">
+                <i class="fa-solid fa-heart-pulse"></i>
+              </div>
+              <span class="trend-badge positive">
+                <i class="fa-solid fa-arrow-trend-up"></i> +4.2%
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="metric-label">Engagement Rate (%)</span>
+              <h2 class="metric-value" id="valEngagement">8.65%</h2>
+              <span class="metric-subtext">Benchmark Industri TikTok: 4.5% - 6.0%</span>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar magenta-bar" style="width: 86%;"></div>
+            </div>
+          </div>
+
+          <!-- Metric Card 3: Total Views & Retention -->
+          <div class="metric-card purple-glow">
+            <div class="card-top">
+              <div class="icon-box purple">
+                <i class="fa-solid fa-play"></i>
+              </div>
+              <span class="trend-badge positive">
+                <i class="fa-solid fa-arrow-trend-up"></i> +18.3%
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="metric-label">Total Video Views</span>
+              <h2 class="metric-value" id="valViews">534.1K</h2>
+              <span class="metric-subtext">Rata-rata Watch Time: 18.4s / video</span>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar purple-bar" style="width: 65%;"></div>
+            </div>
+          </div>
+
+          <!-- Metric Card 4: Conversion & Interactions -->
+          <div class="metric-card emerald-glow">
+            <div class="card-top">
+              <div class="icon-box emerald">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <span class="trend-badge positive">
+                <i class="fa-solid fa-arrow-trend-up"></i> +12.5%
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="metric-label">Conversion & Shares</span>
+              <h2 class="metric-value" id="valInteractions">46.2K</h2>
+              <span class="metric-subtext">Shares: 14.2K | Saves/Bookmarks: 32K</span>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar emerald-bar" style="width: 90%;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Charts Grid Section -->
+        <div class="charts-grid">
+          
+          <!-- Chart 1: Daily Reach vs Engagement -->
+          <div class="chart-card glass-panel flex-grow-2">
+            <div class="chart-header">
+              <div>
+                <h3>Analisis Tren Reach vs Engagement</h3>
+                <p class="text-muted">Korelasi jangkauan audiens dan tingkat interaksi harian</p>
+              </div>
+              <div class="chart-legend-custom">
+                <span class="legend-item"><span class="dot cyan"></span> Reach</span>
+                <span class="legend-item"><span class="dot magenta"></span> Engagement Rate (%)</span>
+              </div>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="reachEngagementChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Content Category Mix -->
+          <div class="chart-card glass-panel flex-grow-1">
+            <div class="chart-header">
+              <div>
+                <h3>Distribusi Jenis Konten</h3>
+                <p class="text-muted">Rasio konten Viral vs Conversion</p>
+              </div>
+            </div>
+            <div class="chart-wrapper donut-wrapper">
+              <canvas id="contentDistributionChart"></canvas>
+            </div>
+            <div class="donut-stats-list">
+              <div class="stat-row">
+                <span><i class="fa-solid fa-fire text-magenta"></i> Viral Awareness (Edu & Story)</span>
+                <strong>55%</strong>
+              </div>
+              <div class="stat-row">
+                <span><i class="fa-solid fa-bag-shopping text-cyan"></i> Direct Conversion (Sales & Offer)</span>
+                <strong>30%</strong>
+              </div>
+              <div class="stat-row">
+                <span><i class="fa-solid fa-comments text-purple"></i> Community & QnA</span>
+                <strong>15%</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Recent Video Performance Table Section -->
+        <div class="table-section glass-panel">
+          <div class="table-header">
+            <div>
+              <h3>Performa Video Terbaru</h3>
+              <p class="text-muted">Analisis metriks individual video TikTok @akhmad.suhardian</p>
+            </div>
+            <div class="table-actions">
+              <input type="text" id="searchVideoInput" placeholder="Cari judul video / hashtag..." class="search-input" />
+              <button class="btn btn-outline" id="exportCsvBtn">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Judul Video & Thumbnail</th>
+                  <th>Kategori</th>
+                  <th>Views</th>
+                  <th>Reach Est.</th>
+                  <th>Likes</th>
+                  <th>Comments</th>
+                  <th>Shares</th>
+                  <th>Engagement Rate</th>
+                  <th>Status Strategi</th>
+                </tr>
+              </thead>
+              <tbody id="videoTableBody">
+                <!-- JS will populate rows dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: STRATEGI KONTEN 7 HARI (VIRAL & CONVERSION) -->
+      <section class="tab-content" id="tab-content-strategy">
+        
+        <div class="strategy-banner glass-panel">
+          <div class="strategy-banner-info">
+            <div class="badge-ai-glowing"><i class="fa-solid fa-robot"></i> AI Strategy Generator</div>
+            <h2>Rencana Strategi Konten 7 Hari Ke Depan</h2>
+            <p>Formulasi berbasis data algoritma TikTok terkini: Kombinasi <strong>Hook Viral 3-Detik</strong> dan <strong>Teknik Konversi High-Converting CTA</strong> khusus akun @akhmad.suhardian.</p>
+          </div>
+
+          <div class="strategy-banner-controls">
+            <div class="filter-group">
+              <label>Filter Target:</label>
+              <select id="strategyCategoryFilter" class="select-input">
+                <option value="all">Semua Konten (7 Hari)</option>
+                <option value="viral">Fokus Viral Reach</option>
+                <option value="conversion">Fokus Konversi Sales</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary btn-glow" id="generateAiStrategyBtn">
+              <i class="fa-solid fa-rotate"></i> Regenerasi Strategi AI
+            </button>
+            
+            <button class="btn btn-emerald" id="syncStrategyToGSheetBtn">
+              <i class="fa-solid fa-table"></i> Export ke Google Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- 7-Day Cards Container -->
+        <div class="strategy-days-grid" id="strategyDaysContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+
+      </section>
+
+      <!-- TAB 3: VIDEO PERFORMANCE LIBRARY -->
+      <section class="tab-content" id="tab-video-library">
+        <div class="glass-panel">
+          <div class="chart-header">
+            <div>
+              <h2>Matriks Analisis Performa Video</h2>
+              <p class="text-muted">Perbandingan Reach vs Engagement Rate tiap video</p>
+            </div>
+          </div>
+          <div class="chart-wrapper large-chart">
+            <canvas id="scatterVideoPerformanceChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: API & GOOGLE SHEETS INTEGRATION -->
+      <section class="tab-content" id="tab-integrations">
+        
+        <div class="integrations-grid">
+          
+          <!-- TikTok API Config Card -->
+          <div class="integration-card glass-panel">
+            <div class="card-title-bar">
+              <div class="icon-brand tiktok"><i class="fa-brands fa-tiktok"></i></div>
+              <div>
+                <h3>TikTok Display & Business API</h3>
+                <span class="status-badge connected" id="tiktokApiStatus">Terhubung (OAuth Demo Active)</span>
+              </div>
+            </div>
+            
+            <div class="card-form-body">
+              <p class="text-muted">Masukkan App Key & Access Token TikTok Developer Center Anda untuk live metric sync secara otomatis.</p>
+              
+              <div class="form-group">
+                <label>TikTok Account Username</label>
+                <input type="text" id="cfgTiktokUser" value="@akhmad.suhardian" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label>TikTok Developer App Client Key</label>
+                <input type="password" id="cfgTiktokAppKey" value="tt_app_demo_key_9983172" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label>Access Token (Bearer)</label>
+                <input type="password" id="cfgTiktokToken" value="act_sec_demo_982391823918239" class="form-control" />
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" id="saveTiktokConfigBtn">
+                  <i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi TikTok
+                </button>
+                <button class="btn btn-outline" id="testTiktokApiBtn">
+                  <i class="fa-solid fa-vial"></i> Uji Koneksi API
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Sheets API Config Card -->
+          <div class="integration-card glass-panel">
+            <div class="card-title-bar">
+              <div class="icon-brand gsheet"><i class="fa-solid fa-file-excel"></i></div>
+              <div>
+                <h3>Google Sheets API Integrator</h3>
+                <span class="status-badge connected" id="gsheetStatus">Ready to Sync</span>
+              </div>
+            </div>
+            
+            <div class="card-form-body">
+              <p class="text-muted">Hubungkan Google Sheet untuk menyimpan log metriks TikTok harian dan ekspor strategi konten 7 hari.</p>
+              
+              <div class="form-group">
+                <label>Google Sheet Spreadsheet ID</label>
+                <input type="text" id="cfgGsheetId" value="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" class="form-control" placeholder="Contoh: 1BxiMVs0XRA5nFMdKvBdBZjgm..." />
+              </div>
+
+              <div class="form-group">
+                <label>Google Cloud API Key / Service Account Key</label>
+                <input type="password" id="cfgGsheetApiKey" value="AIzaSyB_DemoKey_9918273645" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label>Target Sheet Name</label>
+                <input type="text" id="cfgGsheetName" value="TikTok_Analytics_Report" class="form-control" />
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-emerald" id="saveGsheetConfigBtn">
+                  <i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi GSheet
+                </button>
+                <button class="btn btn-outline" id="syncGsheetNowBtn">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Sync Ke Google Sheet Sekarang
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Input Data Konten Asli -->
+  <div id="customDataModal" class="modal-overlay hidden">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <div>
+          <h3><i class="fa-solid fa-pen-to-square text-cyan"></i> Impor / Tambahkan Data Konten Real TikTok Anda</h3>
+          <p class="text-muted">Masukkan data video asli akun @akhmad.suhardian (Akshardesigns.Id | Canva) untuk analisa tepat.</p>
+        </div>
+        <button class="btn-close" id="closeCustomDataModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="addVideoForm">
+          <div class="form-group">
+            <label>Judul / Topik Video Asli</label>
+            <input type="text" id="inputVideoTitle" class="form-control" placeholder="Contoh: Keyword Element Canva Estetik Feed Olshop" required />
+          </div>
+
+          <div class="form-row" style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+              <label>Kategori</label>
+              <select id="inputVideoCategory" class="select-input" style="width: 100%;">
+                <option value="Viral Awareness">Viral Awareness (Tips Canva / Keyword)</option>
+                <option value="Direct Conversion">Direct Conversion (Jualan Template / Class)</option>
+                <option value="Educational">Educational (Tutorial / Hack)</option>
+                <option value="Storytelling">Storytelling / Creator Journey</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>Target Strategi</label>
+              <select id="inputVideoType" class="select-input" style="width: 100%;">
+                <option value="viral">Fokus Viral Reach</option>
+                <option value="conversion">Fokus Konversi Sales</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row" style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+              <label>Total Views</label>
+              <input type="number" id="inputVideoViews" class="form-control" placeholder="15000" required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>Estimated Reach (Audience Unik)</label>
+              <input type="number" id="inputVideoReach" class="form-control" placeholder="12500" required />
+            </div>
+          </div>
+
+          <div class="form-row" style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+              <label>Likes</label>
+              <input type="number" id="inputVideoLikes" class="form-control" placeholder="1200" required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>Comments</label>
+              <input type="number" id="inputVideoComments" class="form-control" placeholder="85" required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>Shares</label>
+              <input type="number" id="inputVideoShares" class="form-control" placeholder="230" required />
+            </div>
+          </div>
+
+          <div class="form-actions" style="justify-content: flex-end;">
+            <button type="button" class="btn btn-outline" id="cancelCustomDataModalBtn">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Tambah Data Video</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toastNotification" class="toast hidden">
+    <i class="toast-icon fa-solid fa-circle-check"></i>
+    <span id="toastMessage">Konfigurasi berhasil disimpan!</span>
+  </div>
+
+  <!-- App JavaScript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
